@@ -10,81 +10,48 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
 import store from '../../Redux/store';
+import {
+  AllUserAction,
+  SET_ALLUSERS_SEARCH,
+} from '../../Redux/Actions/AllUserAction';
+import {SET_MSG_ARR} from '../../Redux/Actions/ChatBoxAction';
+
 import {ActiveChat} from '../../Redux/Actions/ActiveChatAction';
 import styles from './style';
 
 const AllUsers = props => {
   const [ThisUpdate, SetThisUpdate] = useState(true);
   const [UsersDetail, SetUserDetail] = useState([]);
+  const [ReducerState, SetReducerState] = useState();
 
   useEffect(() => {
+    const UserUid = store?.getState()?.UserReducer?.user?.uid;
+
     if (ThisUpdate) {
-      firestore()
-        .collection('Users')
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(UsersData => {
-            // console.log(UsersData.data(), 'userData');
-            UsersDetail.push(UsersData.data());
-            SetUserDetail([...UsersDetail]);
-          });
-        });
+      store.dispatch(AllUserAction());
+      store.subscribe(() => {
+        SetReducerState(store.getState().AllUsersReducer);
+      });
       SetThisUpdate(false);
     }
   }, []);
 
-  // const UsersDetail = [
-  //   {
-  //     imageUrl:
-  //       'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png',
-  //     Name: 'faraz',
-  //     key: 1,
-  //   },
-  //   {
-  //     imageUrl: 'https://img.icons8.com/plasticine/2x/user.png',
-  //     Name: 'khan',
-  //     key: 2,
-  //   },
-  //   {
-  //     imageUrl:
-  //       'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png',
-  //     Name: 'faraz',
-  //     key: 3,
-  //   },
-  //   {
-  //     imageUrl: 'https://img.icons8.com/plasticine/2x/user.png',
-  //     Name: 'khan',
-  //     key: 4,
-  //   },
-  //   {
-  //     imageUrl:
-  //       'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png',
-  //     Name: 'faraz',
-  //     key: 5,
-  //   },
-  //   {
-  //     imageUrl: 'https://img.icons8.com/plasticine/2x/user.png',
-  //     Name: 'khan',
-  //     key: 6,
-  //   },
-  //   {
-  //     imageUrl:
-  //       'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png',
-  //     Name: 'faraz',
-  //     key: 7,
-  //   },
-  //   {
-  //     imageUrl: 'https://img.icons8.com/plasticine/2x/user.png',
-  //     Name: 'khan',
-  //     key: 8,
-  //   },
-  // ];
   const ChatStart = Item => {
+    store.dispatch(SET_MSG_ARR([]));
+
     store.dispatch(ActiveChat(Item));
-    console.log(Item, 'vvvvv');
 
     props.navigation.navigate('ChatBox');
   };
+
+  const Search = Text => {
+    const Result = ReducerState?.UsersDetail?.filter(Res =>
+      Res.displayName.toLowerCase().startsWith(Text.toLowerCase()),
+    );
+
+    store.dispatch(SET_ALLUSERS_SEARCH(Result));
+  };
+
   const Item = Item => {
     return (
       <TouchableOpacity
@@ -105,12 +72,18 @@ const AllUsers = props => {
     <View>
       <View style={styles.SearchView}>
         <Icon size={25} color="grey" name="search" style={styles.SearchIcon} />
-        <TextInput placeholder="Find Friends" style={styles.SearchInput} />
+        <TextInput
+          placeholder="Find Friends"
+          style={styles.SearchInput}
+          onChangeText={Text => {
+            Search(Text);
+          }}
+        />
       </View>
       <FlatList
-        data={UsersDetail}
+        data={ReducerState?.searchArr}
         renderItem={({item}) => Item(item)}
-        keyExtractor={item => item.key}
+        keyExtractor={(item, index) => index.toString()}
         style={styles.FlatListStyle}
         showsVerticalScrollIndicator={false}
       />

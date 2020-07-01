@@ -28,7 +28,7 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
-  FlatListStyle: {marginBottom: hp('20%')},
+  FlatListStyle: {marginBottom: hp('27%')},
   //   HorizonatlScroll Users
   UsersScroll: {
     flexDirection: 'row',
@@ -58,4 +58,21 @@ export default styles = StyleSheet.create({
     borderWidth: 3,
   },
   UsersName: {textAlign: 'center', fontWeight: 'bold'},
+  // search
+  SearchInput: {
+    flex: 1,
+    fontSize: 16,
+    marginLeft: 5,
+  },
+  SearchIcon: {marginTop: 10, marginLeft: 8},
+
+  SearchView: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: '#c8c8c8',
+    margin: 5,
+    borderRadius: 50,
+    elevation: 2,
+    marginTop: 10,
+  },
 });

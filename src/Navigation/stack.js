@@ -6,7 +6,7 @@ import Icons from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {navigationRef} from './NavigationService';
 import store from '../Redux/store';
-import {Image} from 'react-native';
+import {Image, Text, View} from 'react-native';
 
 // Files
 import Login from '../Screens/Login/index';
@@ -52,9 +52,11 @@ const Navigation = props => {
   const Stack = createStackNavigator();
   const ChatDashboardStackNavigator = () => {
     const {user} = props;
-    // console.log(user.photoURL, 'photo');
+    const chatUser = store?.getState()?.ActiveChatReducer?.ChatUser;
     const UserName = store?.getState()?.ActiveChatReducer?.ChatUser
       ?.displayName;
+    const photouri = store?.getState()?.ActiveChatReducer?.ChatUser?.PhotoUrl;
+    console.log(store?.getState()?.ActiveChatReducer?.ChatUser, 'chatuser');
     const arr = UserName?.split(' ');
     var name = arr
       ?.map(item => item.charAt(0).toUpperCase() + item.slice(1))
@@ -76,7 +78,48 @@ const Navigation = props => {
           name="ChatBox"
           component={ChatBox}
           options={() => ({
-            title: name,
+            // headerLeft: () => (
+            //   <Image source={{uri: photouri}} style={styles.stackImage} />
+            // ),
+            // title: name,
+            headerTitle: () => {
+              if (chatUser.hasOwnProperty('MemberUid')) {
+                return (
+                  <View style={{flexDirection: 'row', flex: 1}}>
+                    <Image
+                      source={{uri: chatUser?.GroupImage}}
+                      style={styles.stackImage}
+                    />
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          marginTop: '10%',
+                        }}>
+                        {chatUser?.groupName}
+                      </Text>
+                      {/* <Text>Active Now</Text> */}
+                    </View>
+                  </View>
+                );
+              } else if (!chatUser.hasOwnProperty('MemberUid')) {
+                return (
+                  <View style={{flexDirection: 'row', flex: 1}}>
+                    <Image
+                      source={{uri: chatUser?.PhotoUrl}}
+                      style={styles.stackImage}
+                    />
+                    <View>
+                      <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                        {name}
+                      </Text>
+                      <Text>Active Now</Text>
+                    </View>
+                  </View>
+                );
+              }
+            },
           })}
         />
       </Stack.Navigator>
@@ -86,8 +129,6 @@ const Navigation = props => {
   const NotShowTab = ['ChatBox'];
 
   const showTab = (route, array) => {
-    // console.log(route, 'route');
-
     const RouteName = route?.state?.routes[route.state.index]?.name;
     return !array.includes(RouteName);
   };

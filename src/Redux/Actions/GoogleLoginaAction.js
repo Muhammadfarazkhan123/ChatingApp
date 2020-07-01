@@ -3,7 +3,6 @@ import auth from '@react-native-firebase/auth';
 
 const GoogleLogin = () => {
   return async dispatch => {
-    // console.log('google');
     const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     await auth().signInWithCredential(googleCredential);

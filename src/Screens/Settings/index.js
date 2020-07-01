@@ -91,9 +91,7 @@ const Settings = props => {
     props.navigation.navigate('Chat');
   };
 
-  useEffect(() => {
-    console.log(store.getState().UserReducer.user.displayName);
-  });
+  useEffect(() => {});
   return (
     <View>
       <FlatList

@@ -8,11 +8,7 @@ import {
 export default styles = StyleSheet.create({
   MsgBoxView: {
     flexDirection: 'row',
-    position: 'absolute',
-    bottom: 4,
-    height: hp('8%'),
     width: wp('100%'),
-    // top: 20,
   },
   MsgBoxInput: {
     flex: 1,
@@ -24,6 +20,9 @@ export default styles = StyleSheet.create({
     marginRight: wp('2%'),
     fontSize: 16,
     maxHeight: hp('20%'),
+    minHeight: hp('8%'),
+    paddingRight: 20,
+    paddingLeft: 20,
   },
   MsgBoxIcon: {marginRight: hp('1%')},
 });

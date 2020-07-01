@@ -9,7 +9,7 @@ export default styles = StyleSheet.create({
   stackImage: {
     width: wp('12%'),
     height: hp('7.2%'),
-    marginLeft: wp('4%'),
+    // marginLeft: wp('4%'),
     borderRadius: 50,
   },
 });
