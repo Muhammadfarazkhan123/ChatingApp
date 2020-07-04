@@ -104,7 +104,7 @@ export const ChatBoxAction = () => {
   };
 };
 
-export const SendAction = () => {
+export const SendAction = (scrollRef) => {
   const states = store?.getState()?.ChatBoxReducer;
   const UserUid = store?.getState()?.UserReducer?.user?.uid;
   const ActiveUserUid = store.getState()?.ActiveChatReducer?.ChatUser.UserUid;
@@ -207,6 +207,7 @@ export const SendAction = () => {
         .collection('Chats')
         .add(chatObj);
     }
+    scrollRef.scrollToEnd({animated: true})
   };
 };
 

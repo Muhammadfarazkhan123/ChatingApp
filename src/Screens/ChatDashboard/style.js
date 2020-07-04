@@ -48,25 +48,25 @@ export default styles = StyleSheet.create({
   NameTimeStyle: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft:wp(5)
+    paddingLeft: wp(5)
   },
   msgNotiView: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft:wp(5)
+    paddingLeft: wp(5)
   },
   MainNameView: {
     flex: 1,
     flexDirection: "column",
   },
   msgNoti: {
-    backgroundColor: "rgb(64, 107, 237)",
-    padding:wp(2),
+    backgroundColor: "rgb(28, 98, 219)",
+    padding: wp(2),
     borderRadius: wp(3),
-    paddingHorizontal:wp(3)
+    paddingHorizontal: wp(3)
   },
 
-  FlatListStyle: { flex: 1 },
+
   //   HorizonatlScroll Users
   UsersScroll: {
     flexDirection: 'row',
@@ -96,6 +96,7 @@ export default styles = StyleSheet.create({
     borderWidth: 3,
   },
   UsersName: { textAlign: 'center', fontWeight: 'bold' },
+
   // search
   SearchInput: {
     flex: 1,
@@ -110,11 +111,87 @@ export default styles = StyleSheet.create({
     borderColor: '#c8c8c8',
     margin: 5,
     borderRadius: 50,
-    elevation: 2,
+    elevation: 1,
     marginTop: 10,
+    marginBottom:hp(2)
   },
+
+  // GroupBUtton
   GroupBUtton: { position: 'absolute', bottom: 15, alignSelf: 'flex-end', right: 15, justifyContent: "center", },
-  GroupIconView: { borderRadius: wp(18), height: wp(18), width: wp(18), backgroundColor: "rgb(215, 117, 235)", alignItems: "center", justifyContent: "center" }
+  GroupIconView: {
+    borderRadius: wp(18),
+    height: wp(18),
+    width: wp(18),
+    backgroundColor: "rgb(215, 117, 235)",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  // MODAL
+  mainView: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    height: '100%',
+  },
+  innerView:{
+    backgroundColor: 'white',
+    height: '90%',
+    marginTop: '18%',
+    width: '100%',
+    alignSelf: 'center',
+    borderTopLeftRadius: wp(5),
+    borderTopRightRadius: wp(5),
+    padding: 10,
+  },
+  CloseButton:{
+    alignSelf: 'flex-end',
+    marginBottom:hp(3)
+  },
+  GroupAdd:{
+    flexDirection:"row",
+    alignItems:"center",
+  },
+  AddImg:{
+    alignItems:"center"
+  },
+  NameIcon:{ 
+    flex:1 ,
+    flexDirection: "row", 
+    alignItems: "center",
+    // paddingTop:wp(1)
+  },
+  GroupInput:{
+    marginHorizontal:wp(4),
+    borderWidth:1,
+    flex:1,
+    fontSize:16,
+    borderRadius:wp(10),
+    elevation:1,
+    borderColor:"#c8c8c8",
+    paddingLeft:wp(3)
+  },
+
+// GroupList
+MainList:{
+flexDirection:"row",
+justifyContent:"space-between",
+paddingVertical:wp(2),
+paddingHorizontal:wp(3)
+},
+GroupListView:{
+  flexDirection:"row",
+  alignItems:"center"
+},
+GroupListImg:{
+  height:wp(15),
+  width:wp(15),
+  borderRadius:wp(15)
+},
+GroupListTitle:{
+  marginLeft:wp(3),
+  fontSize:wp(5)
+}
+
+
 
 });
 

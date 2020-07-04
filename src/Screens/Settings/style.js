@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 import {
   widthPercentageToDP as wp,
@@ -6,50 +6,33 @@ import {
 } from 'react-native-responsive-screen';
 
 export default styles = StyleSheet.create({
-  // FlatList
-  ListImg: {
-    width: wp('13%'),
-    borderRadius: 50,
-    borderColor: 'grey',
-    borderWidth: 2,
-    marginLeft: wp('3%'),
-    flexDirection: 'row',
-    height: hp('8%'),
-  },
-
-  ListTitle: {
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginTop: hp('2%'),
-    marginLeft: wp('5%'),
+  // profile Image
+  ProfileView: { alignItems: "center", marginTop: hp(3) },
+  ProfileImage: { width: wp(40), height: wp(40), borderRadius: wp(40), borderWidth: 1 },
+  ProfileName: {
+    fontSize: wp(6),
+    fontWeight: "bold",
   },
   MainListView: {
-    marginTop: hp('3%'),
-    paddingBottom: hp('1%'),
+    elevation: 1,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    marginTop: wp(5),
+    paddingTop:wp(3),
+    paddingBottom: wp(2),
   },
-  ListView: {
-    flex: 1,
-    flexDirection: 'row',
-    borderBottomWidth: 2,
-    borderBottomColor: '#cfcfcf',
+  TouchStyle: {
+    flexDirection: "row",
+    paddingHorizontal: wp(8),
+    paddingVertical: wp(4),
+    justifyContent: "space-between"
   },
+  IconStyle: {
+    fontWeight: "bold"
+  },
+  TextStyle: {
+    fontSize: wp(5),
+    marginLeft: wp(5)
+  }
 
-  FlatListStyle: {marginBottom: hp('20%')},
-
-  FindFriendStyle: {
-    height: hp('10%'),
-    flex: 2,
-  },
-
-  FindFriendText: {
-    marginTop: hp('3%'),
-    marginLeft: wp('7%'),
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  FindFriendIcon: {
-    marginTop: hp('3%'),
-    marginLeft: wp('5%'),
-  },
 });

@@ -49,8 +49,7 @@ const ChatBox = (props) => {
   }, []);
   // console.log(groupReducer, 'groupred');
   const send = () => {
-    store.dispatch(SendAction());
-    scrollRef.scrollToEnd({animated: true});
+    store.dispatch(SendAction(scrollRef));
   };
 
   const SetTyping = text => {
@@ -102,7 +101,7 @@ const ChatBox = (props) => {
                 <Text
                   style={{
                     color: v.Uid == UserUid ? 'white' : 'black',
-                    textAlign:v.Uid == UserUid? 'left':"right",
+                    textAlign:"left",
 
                   }}>
                   {v.Msg}

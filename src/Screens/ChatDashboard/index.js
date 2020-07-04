@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -15,8 +15,8 @@ import firestore from '@react-native-firebase/firestore';
 import store from '../../Redux/store';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import styles from './style';
-import {ActiveChat} from '../../Redux/Actions/ActiveChatAction';
-import {SET_MSG_ARR} from '../../Redux/Actions/ChatBoxAction';
+import { ActiveChat } from '../../Redux/Actions/ActiveChatAction';
+import { SET_MSG_ARR } from '../../Redux/Actions/ChatBoxAction';
 import {
   ChatDashboard,
   SET_GROUP_NAME,
@@ -25,10 +25,13 @@ import {
   GroupSelection,
   SET_SHOW_MODAL
 } from '../../Redux/Actions/ChatDashboardAction';
-import {SET_ISGROUP} from '../../Redux/Actions/GroupAction';
+import { SET_ISGROUP } from '../../Redux/Actions/GroupAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FeatherIcon from "react-native-vector-icons/Feather";
 import ImagePicker from 'react-native-image-picker';
+import IonIcons from 'react-native-vector-icons/Ionicons'
+import Entypo from 'react-native-vector-icons/Entypo'
 import storage from '@react-native-firebase/storage';
 
 import {
@@ -59,7 +62,7 @@ const Chat = props => {
         SetReducerState(store.getState().ChatDashboardReducer);
         setGroupstate(store.getState().AllUsersReducer);
       });
-      
+
       setDidUpdate(false);
     }
     console.log(store.getState().ChatDashboardReducer, 'reducer');
@@ -89,80 +92,78 @@ const Chat = props => {
           onPress={() => {
             GroupChatStart(Item);
           }}>
-       
+
           <View style={styles.ListView}>
-            <Image source={{uri: Item.GroupImage}} style={styles.ListImg} />
+            <Image source={{ uri: Item.GroupImage }} style={styles.ListImg} />
           </View>
-       
-         <View style={styles.MainNameView}>
-         <View style={styles.NameTimeStyle}>
-            <Text style={styles.ListTitle}>{Item.groupName}</Text>
-         <Text style={{color:"grey"}}>5 min</Text>
+
+          <View style={styles.MainNameView}>
+            <View style={styles.NameTimeStyle}>
+              <Text style={styles.ListTitle}>{Item.groupName}</Text>
+              <Text style={{ color: "grey" }}>5 min</Text>
+            </View>
+
+
+            <View style={styles.msgNotiView}>
+              <Text style={styles.LastMsgStyle}>you:kese ho</Text>
+              <View style={styles.msgNoti}>
+                <Text style={{ color: "white", fontWeight: "bold" }}>1</Text>
+              </View>
+            </View>
           </View>
-          
-          
-          <View style={styles.msgNotiView}>
-            <Text style={styles.LastMsgStyle}>you:kese ho</Text>
-       <View style={styles.msgNoti}>
-          <Text style={{color:"white",fontWeight:"bold"}}>1</Text>
-        </View>
-       </View>
-         </View>
 
 
         </TouchableOpacity>
       );
     }
-   if(!Item.hasOwnProperty('MemberUid')){
-    return (
-      <TouchableOpacity
-        style={styles.MainListView}
-        onPress={() => {
-          ChatStart(Item);
-        }}>
-        <View style={styles.ListView}>
-          <Image source={{uri: Item?.PhotoUrl}} style={styles.ListImg} />
-        </View>
-
-       <View style={styles.MainNameView}>
-         <View style={styles.NameTimeStyle}>
-            <Text style={styles.ListTitle}>{Item?.displayName}</Text>
-         <Text style={{color:"grey"}}>5 min</Text>
+    if (!Item.hasOwnProperty('MemberUid')) {
+      return (
+        <TouchableOpacity
+          style={styles.MainListView}
+          onPress={() => {
+            ChatStart(Item);
+          }}>
+          <View style={styles.ListView}>
+            <Image source={{ uri: Item?.PhotoUrl }} style={styles.ListImg} />
           </View>
-          
-          
-          <View style={styles.msgNotiView}>
-            <Text style={styles.LastMsgStyle}>you:kese ho</Text>
-       <View style={styles.msgNoti}>
-          <Text style={{color:"white",fontWeight:"bold"}}>1</Text>
-        </View>
-       </View>
-         </View>
 
-      </TouchableOpacity>
-    );
-   }
+          <View style={styles.MainNameView}>
+            <View style={styles.NameTimeStyle}>
+              <Text style={styles.ListTitle}>{Item?.displayName}</Text>
+              <Text style={{ color: "grey" }}>5 min</Text>
+            </View>
+
+
+            <View style={styles.msgNotiView}>
+              <Text style={styles.LastMsgStyle}>you:kese ho</Text>
+              <View style={styles.msgNoti}>
+                <Text style={{ color: "white", fontWeight: "bold" }}>1</Text>
+              </View>
+            </View>
+          </View>
+
+        </TouchableOpacity>
+      );
+    }
   };
   const gropFunc = (index) => {
     store.dispatch(GroupSelection(index))
   };
   const groupChat = () => {
     store.dispatch(GroupCreate(props));
-    
+
   };
   const GroupItem = (Item, index) => {
     return (
       <TouchableOpacity
-        style={styles.MainListView}
+        style={styles.MainList}
         onPress={() => {
           gropFunc(index);
         }}>
-        <View style={styles.ListView}>
-          <Image source={{uri: Item?.PhotoUrl}} style={styles.ListImg} />
-        </View>
-        <View style={{flex: 3}}>
-          <Text style={styles.ListTitle}>{Item?.displayName}</Text>
-        </View>
+        <View style={styles.GroupListView}>
+          <Image source={{ uri: Item?.PhotoUrl }} style={styles.GroupListImg} />
+          <Text style={styles.GroupListTitle}>{Item?.displayName}</Text>
+          </View>
         {Item.isSelected && (
           <Icon name="check-circle" size={30} color="green" />
         )}
@@ -188,7 +189,7 @@ const Chat = props => {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = {uri: response.uri};
+        const source = { uri: response.uri };
 
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
@@ -205,7 +206,7 @@ const Chat = props => {
     });
   };
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       {/* <View
         style={{
           borderBottomColor: '#cfcfcf',
@@ -241,19 +242,19 @@ const Chat = props => {
         </ScrollView>
       </View> */}
       <View>
-      <FeatherIcon
-                  size={25}
-                  name="search"
-                  style={styles.DashboardSearch}
-                />
+        <FeatherIcon
+          size={25}
+          name="search"
+          style={styles.DashboardSearch}
+        />
         <Text style={styles.HeadStyle}>Messages</Text>
       </View>
       {ReducerState?.chatUser.length == 0 && (
-        <Text>You have No conversations</Text>
+        <Text style={{ alignSelf: "center" }}>You have No conversations</Text>
       )}
       <FlatList
         data={ReducerState?.chatUser}
-        renderItem={({item}) => Item(item)}
+        renderItem={({ item }) => Item(item)}
         keyExtractor={(item, index) => index.toString()}
         style={styles.FlatListStyle}
         showsVerticalScrollIndicator={false}
@@ -268,57 +269,50 @@ const Chat = props => {
 
         }}>
         <View
-          style={{
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            height: '100%',
-          }}>
+          style={styles.mainView}>
           <View
-            style={{
-              backgroundColor: 'white',
-              height: '90%',
-              marginTop: '18%',
-              width: '100%',
-              alignSelf: 'center',
-              borderTopLeftRadius: 15,
-              borderTopRightRadius: 15,
-              padding: 10,
-            }}>
-            <TouchableHighlight
-              style={{
-                ...styles.openButton,
-                backgroundColor: 'black',
-                height: 30,
-                width: 30,
-                borderRadius: 50,
-                borderWidth: 1,
-                // position: 'absolute',
-                alignSelf: 'flex-end',
-                // top: 5,
-              }}
+            style={styles.innerView}>
+            <TouchableOpacity
+              style={styles.CloseButton}
               onPress={() => {
                 store.dispatch(SET_SHOW_MODAL(!ReducerState.showModal));
               }}>
-              <Text style={{textAlign: 'center', color: 'white', fontSize: 20}}>
-                X
-              </Text>
-            </TouchableHighlight>
+              <Entypo size={30} name="circle-with-cross" color="rgb(28, 98, 219)"/>
+            </TouchableOpacity>
             <View>
-              <View style={styles.SearchView}>
-                <MatIcon size={30} name="group-add" style={styles.SearchIcon} />
+              <View style={styles.GroupAdd}>
 
-                <TextInput
-                  placeholder="Group Name"
-                  style={styles.SearchInput}
-                  onChangeText={text => {
-                    store.dispatch(SET_GROUP_NAME(text));
-                  }}
-                />
                 <TouchableOpacity
                   onPress={() => {
                     AddImage();
-                  }}>
-                  <MatIcon size={30} name="add" style={styles.SearchIcon} />
-                  <Text>Add Image</Text>
+                  }}
+                  style={styles.AddImg}
+                >
+                  <MaterialIcons size={35} name="image-plus" color="rgb(215, 117, 235)" />
+                </TouchableOpacity>
+
+                <View style={styles.NameIcon}>
+                  <TextInput
+                    placeholder="Group Name"
+                    onChangeText={text => {
+                      store.dispatch(SET_GROUP_NAME(text));
+                    }}
+                    style={styles.GroupInput}
+                  />
+
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    groupChat();
+                  }}
+                  style={styles.CreateBtn}
+
+                >
+                  <IonIcons
+                    name="md-send"
+                    size={30}
+                    color="rgb(28, 98, 219)"
+                  />
                 </TouchableOpacity>
               </View>
               <View style={styles.SearchView}>
@@ -336,22 +330,16 @@ const Chat = props => {
                     Search(Text);
                   }}
                 />
-                <TouchableOpacity
-                  onPress={() => {
-                    groupChat();
-                  }}>
-                  <Text>create group</Text>
-                </TouchableOpacity>
+
               </View>
 
+            </View>
               <FlatList
                 data={Groupstate?.searchArr}
-                renderItem={({item, index}) => GroupItem(item, index)}
+                renderItem={({ item, index }) => GroupItem(item, index)}
                 keyExtractor={(item, index) => index.toString()}
-                style={styles.FlatListStyle,{marginBottom:"27%"}}
                 showsVerticalScrollIndicator={false}
               />
-            </View>
           </View>
         </View>
       </Modal>
@@ -362,7 +350,7 @@ const Chat = props => {
           store.dispatch(SET_SHOW_MODAL(true))
         }}>
         <View style={styles.GroupIconView}>
-          <MatIcon size={40} name="group-add"color="white" />
+          <MatIcon size={40} name="group-add" color="white" />
         </View>
       </TouchableOpacity>
     </View>
