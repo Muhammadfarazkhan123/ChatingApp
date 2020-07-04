@@ -2,8 +2,10 @@ import React from 'react';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icons from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import EvilIcons from "react-native-vector-icons/EvilIcons"
+import FeatherIcon from "react-native-vector-icons/Feather";
 import {navigationRef} from './NavigationService';
 import store from '../Redux/store';
 import {Image, Text, View} from 'react-native';
@@ -15,6 +17,7 @@ import AllUsers from '../Screens/AllUsers/index';
 import Settings from '../Screens/Settings/index';
 import ChatBox from '../Screens/ChatBox/index';
 import styles from './style';
+import style from '../Screens/ChatDashboard/style';
 
 const Navigation = props => {
   const LoginStack = createStackNavigator();
@@ -31,6 +34,18 @@ const Navigation = props => {
 
   const Userstack = createStackNavigator();
   const AllUserStack = () => {
+    const {user} = props;
+    const chatUser = store?.getState()?.ActiveChatReducer?.ChatUser;
+    const UserName = store?.getState()?.ActiveChatReducer?.ChatUser
+      ?.displayName;
+    const photouri = store?.getState()?.ActiveChatReducer?.ChatUser?.PhotoUrl;
+    console.log(store?.getState()?.ActiveChatReducer?.ChatUser, 'chatuser');
+    const arr = UserName?.split(' ');
+    var name = arr
+      ?.map(item => item.charAt(0).toUpperCase() + item.slice(1))
+      .join(' ');
+    console.log(name, 'name');
+
     return (
       <Userstack.Navigator>
         <Userstack.Screen
@@ -43,7 +58,24 @@ const Navigation = props => {
         <Userstack.Screen
           name="ChatBox"
           component={ChatBox}
-          option={() => ({})}
+          options={() => ({
+            headerTitle: () => {
+              return (
+                <View style={{flexDirection: 'row', flex: 1}}>
+                  <Image
+                    source={{uri: chatUser?.PhotoUrl}}
+                    style={styles.stackImage}
+                  />
+                  <View>
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                      {name}
+                    </Text>
+                    <Text>Active Now</Text>
+                  </View>
+                </View>
+              );
+            }
+          })}
         />
       </Userstack.Navigator>
     );
@@ -82,6 +114,8 @@ const Navigation = props => {
             //   <Image source={{uri: photouri}} style={styles.stackImage} />
             // ),
             // title: name,
+            headerStyle:styles.headerStyling,
+           headerShown:false,
             headerTitle: () => {
               if (chatUser.hasOwnProperty('MemberUid')) {
                 return (
@@ -141,24 +175,34 @@ const Navigation = props => {
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
             if (route.name === 'Login') {
-              return <Ionicons name="md-Login" size={30} color="black" />;
+              return <Ionicons name="md-Login" size={30} color={focused ? 'black':"grey"} />;
             } else if (route.name === 'Chat') {
-              return <Ionicons name="md-chatboxes" size={30} color="black" />;
+              return <MatIcon name="chat-bubble-outline" size={30} color={focused ? 'black':"grey"} />;
+              
             } else if (route.name === 'Find Friends') {
-              return <Icons name="users" size={30} color="black" />;
+              return <FeatherIcon name="user" size={30} color={focused ? 'black':"grey"} />;
             } else if (route.name === 'Settings') {
-              return <Ionicons name="md-settings" size={30} color="black" />;
+              return <EvilIcons name="gear" size={30} color={focused ? 'black':"grey"} />;
             }
 
             // You can return any component that you like here!
           },
-        })}
-        initialRouteName="Chat">
+          
+        })
+      }
+        initialRouteName="Chat"
+        tabBarOptions={
+          {
+            showLabel:false
+          }
+        }
+        >
         <Tab.Screen
           name="Chat"
           component={ChatDashboardStackNavigator}
           options={({route}) => ({
             tabBarVisible: showTab(route, NotShowTab),
+
           })}
         />
 

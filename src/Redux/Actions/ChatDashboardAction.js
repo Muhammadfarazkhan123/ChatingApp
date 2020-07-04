@@ -7,10 +7,12 @@ import {
   GROUP_NAME,
   GROUP_IMG,
   GROUP_ARR,
+  SHOW_MODAL
 } from './type';
 import storage from '@react-native-firebase/storage';
 import {ActiveChat} from './ActiveChatAction';
-import {tsPropertySignature} from '@babel/types';
+import { SET_ISGROUP } from "./GroupAction";
+import { SET_ALLUSERS_SEARCH } from "./AllUserAction";
 
 export const ChatDashboard = () => {
   const UserUid = store?.getState()?.UserReducer?.user?.uid;
@@ -18,6 +20,8 @@ export const ChatDashboard = () => {
     let UsersDetail = store?.getState()?.ChatDashboardReducer?.usersDetail;
     let ChatUser = store?.getState()?.ChatDashboardReducer?.chatUser;
     let GroupUser = store?.getState()?.ChatDashboardReducer?.GroupUser;
+    console.log(UserUid,"userUid")
+    console.log(store?.getState()?.UserReducer?.user,"userUid data")
 
     // const UsersArray = [];
     firestore()
@@ -58,7 +62,9 @@ export const ChatDashboard = () => {
 };
 
 export const GroupCreate = props => {
+  const {AllUsersReducer,ChatDashboardReducer}=store.getState()
   const states = store.getState().ChatDashboardReducer;
+  const SearchArray=AllUsersReducer?.searchArr;
   return async dispatch => {
     if (states.groupName != '') {
       const reference = storage().ref('Images/' + new Date().getTime());
@@ -72,11 +78,12 @@ export const GroupCreate = props => {
       const PushKey = await firestore()
         .collection('chat')
         .doc().id;
-      states.groupArr.map(v => {
+        const GroupMem=SearchArray.filter(memb=>memb.isSelected)
+        GroupMem.map(v => {
         UidArr.push(v.UserUid);
       });
       console.log(UidArr, 'uidarr');
-      states.groupArr.map(val => {
+      GroupMem.map(val => {
         firestore()
           .collection('Users')
           .doc(val.UserUid)
@@ -90,6 +97,7 @@ export const GroupCreate = props => {
               Istyping: false,
             }),
           });
+        })  
         firestore()
           .collection('Users')
           .doc(UserUid)
@@ -102,30 +110,51 @@ export const GroupCreate = props => {
               ChatKey: PushKey,
               Istyping: false,
             }),
-          });
-      });
+          }).then(getData=>{
+            const GroupObj={
+              groupName: states.groupName,
+              GroupImage: url,
+              CreatorUid: UserUid,
+              MemberUid: UidArr,
+              ChatKey: PushKey,
+              Istyping: false,
+            }
+            const isSelectedItem=SearchArray.filter(val=>val.isSelected)
+            isSelectedItem.map(item=>{
+              item.isSelected=false
+              store.dispatch(SET_ALLUSERS_SEARCH(SearchArray));
 
-      firestore()
-        .collection('Users')
-        .doc(UserUid)
-        .onSnapshot(UserData => {
-          const Filter = UserData?.data()?.ChatId?.filter(v => {
-            v.ChatKey === PushKey;
-          });
-          console.log(Filter, 'filter');
-          Filter.map(val => {
-            store.dispatch(ActiveChat(val));
-          });
-        });
+            })
+            dispatch(SET_SHOW_MODAL(false))
+            dispatch(ActiveChat(GroupObj));
+            props.navigation.navigate('ChatBox');
+            dispatch(SET_ISGROUP(true));
 
-      props.navigation.navigate('ChatBox');
-
-      store.dispatch(SET_ISGROUP(true));
+          }
+            
+          )
     } else {
       alert('please enter group name');
     }
   };
 };
+
+export const GroupSelection=(index)=>{
+  return dispatch=>{
+    const {AllUsersReducer,ChatDashboardReducer}=store.getState()
+  const SearchArray=AllUsersReducer?.searchArr;
+  const arr = AllUsersReducer?.searchArr[index]; 
+
+  const isSelectedItem=SearchArray.filter(val=>val.isSelected).length
+  if(isSelectedItem >=3 && !arr.isSelected){
+    alert("you already selected 3 participants")
+  }else{
+    arr.isSelected = !arr.isSelected;
+  store.dispatch(SET_ALLUSERS_SEARCH(SearchArray));
+  }
+ 
+  }
+}
 
 const USER_DETAIL = usersDetail => {
   return {
@@ -154,15 +183,9 @@ export const SET_GROUP_IMAGE = imageUrl => {
   };
 };
 
-export const SET_GROUP_ARR = groupArr => {
-  return {
-    type: GROUP_ARR,
-    groupArr,
-  };
-};
-// const SET_GROUP = GroupUser => {
-//   return {
-//     type: GROUP_USER,
-//     GroupUser,
-//   };
-// };
+export const SET_SHOW_MODAL=showModal=>{
+  return{
+    type:SHOW_MODAL,
+    showModal
+  }
+}

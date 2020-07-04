@@ -12,4 +12,4 @@ export const IS_GROUP = 'IS_GROUP';
 export const GROUP_USER = 'GROUP_USER';
 export const GROUP_NAME = 'GROUP_NAME';
 export const GROUP_IMG = 'GROUP_IMG';
-export const GROUP_ARR = 'GROUP_ARR';
+export const SHOW_MODAL='SHOW_MODAL'

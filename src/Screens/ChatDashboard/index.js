@@ -21,11 +21,13 @@ import {
   ChatDashboard,
   SET_GROUP_NAME,
   SET_GROUP_IMAGE,
-  SET_GROUP_ARR,
   GroupCreate,
+  GroupSelection,
+  SET_SHOW_MODAL
 } from '../../Redux/Actions/ChatDashboardAction';
 import {SET_ISGROUP} from '../../Redux/Actions/GroupAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FeatherIcon from "react-native-vector-icons/Feather";
 import ImagePicker from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 
@@ -33,6 +35,7 @@ import {
   AllUserAction,
   SET_ALLUSERS_SEARCH,
 } from '../../Redux/Actions/AllUserAction';
+import style from './style';
 
 const Chat = props => {
   const [DidUpdate, setDidUpdate] = useState(true);
@@ -47,16 +50,16 @@ const Chat = props => {
   useEffect(() => {
     const UserUid = store?.getState()?.UserReducer?.user?.uid;
     console.log('run');
+    store.dispatch(ChatDashboard());
     if (DidUpdate) {
       // const UsersArray = [];
-      store.dispatch(ChatDashboard());
       store.dispatch(AllUserAction());
 
       store.subscribe(() => {
         SetReducerState(store.getState().ChatDashboardReducer);
         setGroupstate(store.getState().AllUsersReducer);
       });
-
+      
       setDidUpdate(false);
     }
     console.log(store.getState().ChatDashboardReducer, 'reducer');
@@ -65,6 +68,7 @@ const Chat = props => {
   const ChatStart = v => {
     store.dispatch(SET_MSG_ARR([]));
     store.dispatch(ActiveChat(v));
+    store?.dispatch(SET_ISGROUP(false));
 
     props.navigation.navigate('ChatBox');
   };
@@ -72,6 +76,7 @@ const Chat = props => {
   const GroupChatStart = v => {
     store.dispatch(SET_MSG_ARR([]));
     store.dispatch(ActiveChat(v));
+    store?.dispatch(SET_ISGROUP(true));
 
     props.navigation.navigate('ChatBox');
   };
@@ -84,16 +89,31 @@ const Chat = props => {
           onPress={() => {
             GroupChatStart(Item);
           }}>
+       
           <View style={styles.ListView}>
             <Image source={{uri: Item.GroupImage}} style={styles.ListImg} />
           </View>
-          <View style={{flex: 3}}>
+       
+         <View style={styles.MainNameView}>
+         <View style={styles.NameTimeStyle}>
             <Text style={styles.ListTitle}>{Item.groupName}</Text>
-            <Text>you:kese ho</Text>
+         <Text style={{color:"grey"}}>5 min</Text>
           </View>
+          
+          
+          <View style={styles.msgNotiView}>
+            <Text style={styles.LastMsgStyle}>you:kese ho</Text>
+       <View style={styles.msgNoti}>
+          <Text style={{color:"white",fontWeight:"bold"}}>1</Text>
+        </View>
+       </View>
+         </View>
+
+
         </TouchableOpacity>
       );
     }
+   if(!Item.hasOwnProperty('MemberUid')){
     return (
       <TouchableOpacity
         style={styles.MainListView}
@@ -103,119 +123,39 @@ const Chat = props => {
         <View style={styles.ListView}>
           <Image source={{uri: Item?.PhotoUrl}} style={styles.ListImg} />
         </View>
-        <View style={{flex: 3}}>
-          <Text style={styles.ListTitle}>{Item?.displayName}</Text>
-          <Text>you:kese ho</Text>
+
+       <View style={styles.MainNameView}>
+         <View style={styles.NameTimeStyle}>
+            <Text style={styles.ListTitle}>{Item?.displayName}</Text>
+         <Text style={{color:"grey"}}>5 min</Text>
+          </View>
+          
+          
+          <View style={styles.msgNotiView}>
+            <Text style={styles.LastMsgStyle}>you:kese ho</Text>
+       <View style={styles.msgNoti}>
+          <Text style={{color:"white",fontWeight:"bold"}}>1</Text>
         </View>
+       </View>
+         </View>
+
       </TouchableOpacity>
     );
+   }
   };
-  const gropFunc = (Item, index) => {
-    const arr = Groupstate?.searchArr[index]; // Item?.isSelected=true
-    const state = ReducerState.groupArr;
-    console.log(state.length, 'GroupArr.length');
-
-    if (state.length + 1 <= 3) {
-      arr.isSelected = !arr.isSelected;
-      console.log(Groupstate?.searchArr[index]);
-      if (arr.isSelected) {
-        state.push(arr);
-        store.dispatch(SET_GROUP_ARR(state));
-        // GroupArr.push(arr);
-        // SetGroupArr([...GroupArr]);
-      }
-      if (!arr.isSelected) {
-        const Filter = state.filter((v, i) => {
-          if (v === arr) {
-            state.splice(i, 1);
-          }
-        });
-        // console.log(Filter, 'filter');
-      }
-      if (state.length == 3) {
-        console.log(state.length, 'GroupArr.length baraber 3');
-
-        SetSelect(true);
-      }
-    }
-
-    if (Select) {
-      arr.isSelected = false;
-      console.log(' hai 3');
-
-      if (!arr.isSelected) {
-        console.log('delete');
-        const Filter = state.filter((v, i) => {
-          if (v === arr) {
-            state.splice(i, 1);
-          }
-        });
-        SetSelect(false);
-
-        // console.log(Filter, 'filter');
-      }
-    }
-    console.log(GroupArr, 'grop arr');
-    store.dispatch(SET_ALLUSERS_SEARCH(Groupstate?.searchArr));
+  const gropFunc = (index) => {
+    store.dispatch(GroupSelection(index))
   };
   const groupChat = () => {
-    SetGroupArr(store.getState().AllUsersReducer);
     store.dispatch(GroupCreate(props));
-    // const data=new Date().getTime()
-    // console.log(ImageSource, 'imagesource');
-    // if (GroupName != '') {
-    //   const reference = storage().ref('Images/' + new Date().getTime());
-    //   await reference.putFile(ImageSource.uri);
-    //   const url = await reference.getDownloadURL();
-    //   console.log(url, 'url');
-    //   const UserUid = store?.getState()?.UserReducer?.user?.uid;
-    //   let UidArr = [UserUid];
-    //   const PushKey = await firestore()
-    //     .collection('chat')
-    //     .doc().id;
-    //   GroupArr.map(v => {
-    //     UidArr.push(v.UserUid);
-    //   });
-    //   console.log(UidArr, 'uidarr');
-    //   GroupArr.map(val => {
-    //     firestore()
-    //       .collection('Users')
-    //       .doc(val.UserUid)
-    //       .update({
-    //         ChatId: firestore.FieldValue.arrayUnion({
-    //           groupName: GroupName,
-    //           GroupImage: url,
-    //           CreatorUid: UserUid,
-    //           MemberUid: UidArr,
-    //           ChatKey: PushKey,
-    //           Istyping: false,
-    //         }),
-    //       });
-    //     firestore()
-    //       .collection('Users')
-    //       .doc(UserUid)
-    //       .update({
-    //         ChatId: firestore.FieldValue.arrayUnion({
-    //           groupName: GroupName,
-    //           GroupImage: url,
-    //           CreatorUid: UserUid,
-    //           MemberUid: UidArr,
-    //           ChatKey: PushKey,
-    //           Istyping: false,
-    //         }),
-    //       });
-    //   });
-    //   store.dispatch(SET_ISGROUP(true));
-    // } else {
-    //   alert('please enter group name');
-    // }
+    
   };
   const GroupItem = (Item, index) => {
     return (
       <TouchableOpacity
         style={styles.MainListView}
         onPress={() => {
-          gropFunc(Item, index);
+          gropFunc(index);
         }}>
         <View style={styles.ListView}>
           <Image source={{uri: Item?.PhotoUrl}} style={styles.ListImg} />
@@ -266,7 +206,7 @@ const Chat = props => {
   };
   return (
     <View style={{flex: 1}}>
-      <View
+      {/* <View
         style={{
           borderBottomColor: '#cfcfcf',
           borderBottomWidth: 1,
@@ -299,6 +239,14 @@ const Chat = props => {
             })}
           </View>
         </ScrollView>
+      </View> */}
+      <View>
+      <FeatherIcon
+                  size={25}
+                  name="search"
+                  style={styles.DashboardSearch}
+                />
+        <Text style={styles.HeadStyle}>Messages</Text>
       </View>
       {ReducerState?.chatUser.length == 0 && (
         <Text>You have No conversations</Text>
@@ -313,9 +261,11 @@ const Chat = props => {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={ShowModal}
+        visible={ReducerState?.showModal}
         onRequestClose={() => {
           alert('Modal has been closed.');
+          store.dispatch(SET_SHOW_MODAL(!ReducerState.showModal));
+
         }}>
         <View
           style={{
@@ -346,7 +296,7 @@ const Chat = props => {
                 // top: 5,
               }}
               onPress={() => {
-                SetShowModal(!ShowModal);
+                store.dispatch(SET_SHOW_MODAL(!ReducerState.showModal));
               }}>
               <Text style={{textAlign: 'center', color: 'white', fontSize: 20}}>
                 X
@@ -398,7 +348,7 @@ const Chat = props => {
                 data={Groupstate?.searchArr}
                 renderItem={({item, index}) => GroupItem(item, index)}
                 keyExtractor={(item, index) => index.toString()}
-                style={styles.FlatListStyle}
+                style={styles.FlatListStyle,{marginBottom:"27%"}}
                 showsVerticalScrollIndicator={false}
               />
             </View>
@@ -407,12 +357,12 @@ const Chat = props => {
       </Modal>
 
       <TouchableOpacity
-        style={{position: 'absolute', bottom: 20, alignSelf: 'flex-end'}}
+        style={styles.GroupBUtton}
         onPress={() => {
-          SetShowModal(true);
+          store.dispatch(SET_SHOW_MODAL(true))
         }}>
-        <View style={{borderWidth: 1, borderRadius: 50, height: 50, width: 50}}>
-          <MatIcon size={30} name="group-add" />
+        <View style={styles.GroupIconView}>
+          <MatIcon size={40} name="group-add"color="white" />
         </View>
       </TouchableOpacity>
     </View>

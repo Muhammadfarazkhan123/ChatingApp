@@ -12,4 +12,6 @@ export default styles = StyleSheet.create({
     // marginLeft: wp('4%'),
     borderRadius: 50,
   },
+  headerStyling:{backgroundColor:"grey",
+  elevation:0}
 });
