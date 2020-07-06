@@ -5,6 +5,7 @@ import store from './src/Redux/store';
 import Navigation from './src/Navigation/stack';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import {ChatDashboard} from './src/Redux/Actions/ChatDashboardAction'
 
 const App = () => {
   const [user, setUser] = useState();
@@ -30,6 +31,8 @@ const App = () => {
           .doc(user?.uid)
           .set(UserObj, {merge: true});
       }
+    store.dispatch(ChatDashboard());
+
     });
   };
   useEffect(() => {

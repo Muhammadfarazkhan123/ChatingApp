@@ -53,7 +53,7 @@ const Chat = props => {
   useEffect(() => {
     const UserUid = store?.getState()?.UserReducer?.user?.uid;
     console.log('run');
-    store.dispatch(ChatDashboard());
+    // store.dispatch(ChatDashboard());
     if (DidUpdate) {
       // const UsersArray = [];
       store.dispatch(AllUserAction());

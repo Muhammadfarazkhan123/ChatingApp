@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import store from '../../Redux/store';
-import {ALL_USERS, USERS_SEARCH} from './type';
+import { ALL_USERS, USERS_SEARCH } from './type';
 
 export const AllUserAction = () => {
   let UsersDetail = store?.getState()?.AllUsersReducer?.UsersDetail;

@@ -1,14 +1,14 @@
 import React from 'react';
-import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import EvilIcons from "react-native-vector-icons/EvilIcons"
 import FeatherIcon from "react-native-vector-icons/Feather";
-import {navigationRef} from './NavigationService';
+import { navigationRef } from './NavigationService';
 import store from '../Redux/store';
-import {Image, Text, View} from 'react-native';
+import { Image, Text, View } from 'react-native';
 
 // Files
 import Login from '../Screens/Login/index';
@@ -27,14 +27,16 @@ const Navigation = props => {
         screenOptions={{
           animationEnabled: false,
         }}>
-        <LoginStack.Screen name="Login" component={Login} />
+        <LoginStack.Screen name="Login" component={Login} options={() => ({
+          headerShown: false,
+        })} />
       </LoginStack.Navigator>
     );
   };
 
   const Userstack = createStackNavigator();
   const AllUserStack = () => {
-    const {user} = props;
+    const { user } = props;
     const chatUser = store?.getState()?.ActiveChatReducer?.ChatUser;
     const UserName = store?.getState()?.ActiveChatReducer?.ChatUser
       ?.displayName;
@@ -61,13 +63,13 @@ const Navigation = props => {
           options={() => ({
             headerTitle: () => {
               return (
-                <View style={{flexDirection: 'row', flex: 1}}>
+                <View style={{ flexDirection: 'row', flex: 1 }}>
                   <Image
-                    source={{uri: chatUser?.PhotoUrl}}
+                    source={{ uri: chatUser?.PhotoUrl }}
                     style={styles.stackImage}
                   />
                   <View>
-                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
                       {name}
                     </Text>
                     <Text>Active Now</Text>
@@ -83,7 +85,7 @@ const Navigation = props => {
 
   const Stack = createStackNavigator();
   const ChatDashboardStackNavigator = () => {
-    const {user} = props;
+    const { user } = props;
     const chatUser = store?.getState()?.ActiveChatReducer?.ChatUser;
     const UserName = store?.getState()?.ActiveChatReducer?.ChatUser
       ?.displayName;
@@ -101,7 +103,7 @@ const Navigation = props => {
           component={ChatDashboard}
           options={() => ({
             headerLeft: () => (
-              <Image source={{uri: user.photoURL}} style={styles.stackImage} />
+              <Image source={{ uri: user.photoURL }} style={styles.stackImage} />
             ),
             headerShown: false,
           })}
@@ -114,14 +116,14 @@ const Navigation = props => {
             //   <Image source={{uri: photouri}} style={styles.stackImage} />
             // ),
             // title: name,
-            headerStyle:styles.headerStyling,
-           headerShown:false,
+            headerStyle: styles.headerStyling,
+            headerShown: false,
             headerTitle: () => {
               if (chatUser.hasOwnProperty('MemberUid')) {
                 return (
-                  <View style={{flexDirection: 'row', flex: 1}}>
+                  <View style={{ flexDirection: 'row', flex: 1 }}>
                     <Image
-                      source={{uri: chatUser?.GroupImage}}
+                      source={{ uri: chatUser?.GroupImage }}
                       style={styles.stackImage}
                     />
                     <View>
@@ -139,13 +141,13 @@ const Navigation = props => {
                 );
               } else if (!chatUser.hasOwnProperty('MemberUid')) {
                 return (
-                  <View style={{flexDirection: 'row', flex: 1}}>
+                  <View style={{ flexDirection: 'row', flex: 1 }}>
                     <Image
-                      source={{uri: chatUser?.PhotoUrl}}
+                      source={{ uri: chatUser?.PhotoUrl }}
                       style={styles.stackImage}
                     />
                     <View>
-                      <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                      <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
                         {name}
                       </Text>
                       <Text>Active Now</Text>
@@ -171,36 +173,36 @@ const Navigation = props => {
   const TabNavigator = () => {
     return (
       <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === 'Login') {
-              return <Ionicons name="md-Login" size={30} color={focused ? 'black':"grey"} />;
+              return <Ionicons name="md-Login" size={30} color={focused ? 'black' : "grey"} />;
             } else if (route.name === 'Chat') {
-              return <MatIcon name="chat-bubble-outline" size={30} color={focused ? 'black':"grey"} />;
-              
+              return <MatIcon name="chat-bubble-outline" size={30} color={focused ? 'black' : "grey"} />;
+
             } else if (route.name === 'Find Friends') {
-              return <FeatherIcon name="user" size={30} color={focused ? 'black':"grey"} />;
+              return <FeatherIcon name="user" size={30} color={focused ? 'black' : "grey"} />;
             } else if (route.name === 'Settings') {
-              return <EvilIcons name="gear" size={30} color={focused ? 'black':"grey"} />;
+              return <EvilIcons name="gear" size={30} color={focused ? 'black' : "grey"} />;
             }
 
             // You can return any component that you like here!
           },
-          
+
         })
-      }
+        }
         initialRouteName="Chat"
         tabBarOptions={
           {
-            showLabel:false
+            showLabel: false
           }
         }
-        >
+      >
         <Tab.Screen
           name="Chat"
           component={ChatDashboardStackNavigator}
-          options={({route}) => ({
+          options={({ route }) => ({
             tabBarVisible: showTab(route, NotShowTab),
 
           })}
@@ -209,7 +211,7 @@ const Navigation = props => {
         <Tab.Screen
           name="Find Friends"
           component={AllUserStack}
-          options={({route}) => ({
+          options={({ route }) => ({
             tabBarVisible: showTab(route, NotShowTab),
           })}
         />
@@ -221,7 +223,7 @@ const Navigation = props => {
 
   const FINALStack = createStackNavigator();
   const FinalstackNavigator = () => {
-    const {user} = props;
+    const { user } = props;
     return (
       <NavigationContainer>
         <FINALStack.Navigator headerMode="none">
