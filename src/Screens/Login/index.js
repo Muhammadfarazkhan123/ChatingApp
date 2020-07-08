@@ -28,8 +28,8 @@ const Login = () => {
     },
     {
       key: 'three',
-      title: 'Rocket guy',
-      text: 'I\'m already out of descriptions\n\nLorem ipsum bla bla bla',
+      title: 'Notification',
+      text: 'Get your Important message on time with notification',
       image: require('../../Assets/kisspng-digital-marketing-web-banner-advertising-promotion-creative-ideas-5adb74b5f08834.2506242615243317019852.jpg'),
       backgroundColor: '#22bcb5',
     }
@@ -55,7 +55,7 @@ const Login = () => {
     <View>
       <View style={styles.SliderView}>
         <AppIntroSlider renderItem={_renderItem} data={slides} 
-        activeDotStyle={{backgroundColor:"rgb(28, 98, 219)"}}
+        activeDotStyle={{backgroundColor:"rgb(59, 89, 152)"}}
         // dotStyle={{marginTop:"5%"}}
         />
       </View>

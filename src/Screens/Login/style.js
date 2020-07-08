@@ -4,6 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { color } from 'react-native-reanimated';
 
 export default styles = StyleSheet.create({
   // OR LINE
@@ -12,7 +13,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    marginTop: hp('2%'),
+    // marginTop: hp('2%'),
   },
   hairline: {
     backgroundColor: '#e3e6e4',
@@ -37,41 +38,45 @@ export default styles = StyleSheet.create({
 
   },
   SliderTitle: {
-    fontSize: wp(7)
+    fontSize: wp(7),
+    fontWeight:"700",
+    color:"rgb(59, 89, 152)"
   },
   SliderText: {
     fontSize: wp(5),
     color: 'grey',
     textAlign: "center",
+    marginHorizontal:wp(5)
   },
   // BUTTONS
   ButtonView: {
     marginHorizontal: wp(5),
-    marginTop: hp(3)
+    marginTop: hp(0)
 
   },
   ButtonStyleFb: {
     flexDirection:"row",
     alignItems: 'center',
-    height: hp(7),
-    borderRadius: 5,
+    paddingVertical: hp(2),
+    borderRadius: hp(7),
     backgroundColor: "rgb(59, 89, 152)",
     justifyContent: "center",
-    elevation: 2,
-    marginTop: hp(3)
+    marginTop: hp(1)
   },
   ButtonStyleGoogle: {
     flexDirection:"row",
     alignItems: 'center',
-    height: hp(7),
-    borderRadius: 5,
+    paddingVertical: hp(2),
+    borderRadius: hp(7),
     backgroundColor: "white",
     justifyContent: "center",
-    elevation: 2,
+    elevation: 0.5,
+    marginTop: hp(3)
   },
   ButtonIcon:{
-    height:"70%",
-    width:"10%"
+    height:wp(7),
+    width:"10%",
+    marginRight:wp(2)
 
   }
 

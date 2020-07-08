@@ -184,7 +184,8 @@ const Navigation = props => {
             } else if (route.name === 'Find Friends') {
               return <FeatherIcon name="user" size={30} color={focused ? 'black' : "grey"} />;
             } else if (route.name === 'Settings') {
-              return <EvilIcons name="gear" size={30} color={focused ? 'black' : "grey"} />;
+              return <FeatherIcon name="settings" size={30} color={focused ? 'black' : "grey"} />;
+
             }
 
             // You can return any component that you like here!
