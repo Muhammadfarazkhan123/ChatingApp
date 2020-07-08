@@ -37,6 +37,7 @@ const Login = () => {
   ];
   useEffect(() => {
     GoogleSignin.configure({
+      forceCodeForRefreshToken:true,
       webClientId:
         '107228495211-631plvhq99de2uro3nl2e1418bqg83u9.apps.googleusercontent.com',
     });

@@ -7,7 +7,8 @@ import {
   GROUP_NAME,
   GROUP_IMG,
   GROUP_ARR,
-  SHOW_MODAL
+  SHOW_MODAL,
+  SHOW_LOTIE
 } from './type';
 import storage from '@react-native-firebase/storage';
 import {ActiveChat} from './ActiveChatAction';
@@ -125,9 +126,9 @@ export const GroupCreate = props => {
               store.dispatch(SET_ALLUSERS_SEARCH(SearchArray));
 
             })
-            dispatch(SET_SHOW_MODAL(false))
+            dispatch(SET_SHOW_LOTTIE(true))
+            
             dispatch(ActiveChat(GroupObj));
-            props.navigation.navigate('ChatBox');
             dispatch(SET_ISGROUP(true));
 
           }
@@ -187,5 +188,12 @@ export const SET_SHOW_MODAL=showModal=>{
   return{
     type:SHOW_MODAL,
     showModal
+  }
+}
+
+export const SET_SHOW_LOTTIE=showLottie=>{
+  return{
+    type:SHOW_LOTIE,
+    showLottie
   }
 }

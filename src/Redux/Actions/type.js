@@ -13,3 +13,4 @@ export const GROUP_USER = 'GROUP_USER';
 export const GROUP_NAME = 'GROUP_NAME';
 export const GROUP_IMG = 'GROUP_IMG';
 export const SHOW_MODAL='SHOW_MODAL'
+export const SHOW_LOTIE='SHOW_LOTIE'

@@ -5,14 +5,16 @@ import {
   GROUP_NAME,
   GROUP_IMG,
   GROUP_ARR,
-  SHOW_MODAL
+  SHOW_MODAL,
+  SHOW_LOTIE
 } from '../Actions/type';
 const InitialState = {
   usersDetail: [],
   chatUser: [],
   GroupUser: [],
   groupName: '',
-  showModal:false
+  showModal:false,
+  showLottie:false
   
 };
 
@@ -40,6 +42,10 @@ const reducer = (state = InitialState, action) => {
     }
     case SHOW_MODAL: {
       return {...state, showModal: action.showModal};
+    }
+
+    case SHOW_LOTIE: {
+      return {...state, showLottie: action.showLottie};
     }
     default: {
       return state;

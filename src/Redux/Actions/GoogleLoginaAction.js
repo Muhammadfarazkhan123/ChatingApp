@@ -9,4 +9,16 @@ const GoogleLogin = () => {
   };
 };
 
+export const LinkingWithGoogle=async (fbCredentials)=>{
+  console.log(fbCredentials,"fbcredential")
+ const googleLogin= await GoogleSignin.signIn();
+ const credential=auth.GoogleAuthProvider.credential(
+   googleLogin.idToken,
+   googleLogin.accessToken
+ )
+ console.log(googleLogin.accessToken,"accessToken")
+ await auth().signInWithCredential(credential);
+  await auth().currentUser.linkWithCredential(fbCredentials)
+
+}
 export {GoogleLogin};

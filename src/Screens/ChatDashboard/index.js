@@ -23,7 +23,8 @@ import {
   SET_GROUP_IMAGE,
   GroupCreate,
   GroupSelection,
-  SET_SHOW_MODAL
+  SET_SHOW_MODAL,
+  SET_SHOW_LOTTIE
 } from '../../Redux/Actions/ChatDashboardAction';
 import { SET_ISGROUP } from '../../Redux/Actions/GroupAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -32,6 +33,7 @@ import FeatherIcon from "react-native-vector-icons/Feather";
 import ImagePicker from 'react-native-image-picker';
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import Entypo from 'react-native-vector-icons/Entypo'
+import LottieView from 'lottie-react-native'
 import storage from '@react-native-firebase/storage';
 
 import {
@@ -341,6 +343,15 @@ const Chat = props => {
                 showsVerticalScrollIndicator={false}
               />
           </View>
+
+              {ReducerState?.showLottie &&<View style={{height:"30%",width:"70%",alignSelf:"center",marginTop:"20%"}}><LottieView source={require('../../Assets/animation.json')} autoPlay loop={false} style={{zIndex:1}} 
+              onAnimationFinish={()=>{
+                store.dispatch(SET_SHOW_MODAL(false))
+                props.navigation.navigate('ChatBox');
+                store.dispatch(SET_SHOW_LOTTIE(false))
+
+              }}/></View>}  
+             
         </View>
       </Modal>
 

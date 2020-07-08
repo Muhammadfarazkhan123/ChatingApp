@@ -5,14 +5,45 @@ import {
   GraphRequestManager,
   AccessToken,
 } from 'react-native-fbsdk';
+import { Alert } from "react-native";
 import NavigationService from '../../Navigation/NavigationService';
+import {LinkingWithGoogle} from "./GoogleLoginaAction";
 
 const _firebaseFbLogin = async accessToken => {
-  const fbCredential = auth.FacebookAuthProvider.credential(accessToken);
+  try {
+    const fbCredential = auth.FacebookAuthProvider.credential(accessToken);
 
   return await auth().signInWithCredential(fbCredential);
+  } catch (error) {
+    // console.log(error.code,"error with diff")
+    if(error.code === 'auth/account-exists-with-different-credential'){
+      Alert.alert(
+        "warning",
+        "You already Login with this Account Before",
+        [
+          {
+            text:"ok",
+            onPress:()=>{LinkingWithCredential(accessToken)}
+          }
+        ]
+
+      )
+    
+
+    }else{
+      console.log(error.code,"error")
+    }
+  }
 };
 
+const LinkingWithCredential=async (accessToken)=>{
+ try {
+  const fbCredential = auth.FacebookAuthProvider.credential(accessToken);
+  return await LinkingWithGoogle(fbCredential)
+ } catch (error) {
+   console.log(error,"linking error")
+ }
+}
 const FbLogin = props => {
   return dispatch => {
     try {
@@ -24,6 +55,7 @@ const FbLogin = props => {
 
             const responseInfoCallback = async (error, user) => {
               if (error) {
+                console.log("Login fail with error:"+error)
               } else {
                 const firebaseFacebookLogin = await _firebaseFbLogin(
                   accessToken,
@@ -48,12 +80,12 @@ const FbLogin = props => {
             new GraphRequestManager().addRequest(infoRequest).start();
           }
         },
-        function(error) {
-          console.log('Login fail with error: ' + error);
-        },
+        // function(error) {
+        //   console.log('Login fail with error: ' + error);
+        // },
       );
     } catch (error) {
-      console.log(error);
+      console.log(error,"error with diff");
     }
   };
 };

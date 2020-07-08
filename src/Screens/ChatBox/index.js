@@ -95,7 +95,9 @@ const ChatBox = (props) => {
                   style={{
                     color: v.Uid == UserUid ? 'white' : 'black',
                     fontWeight: 'bold',
-                  }}>
+                  }}
+                  
+                  >
                   {v.Uid == UserUid?'You:' : v.name + ':'}
                 </Text>}
                 <Text
@@ -113,7 +115,9 @@ const ChatBox = (props) => {
                     color:'grey',
                     textAlign:v.Uid == UserUid? 'right':"left",
                     fontWeight:"bold"
-                  }}>
+                  }}
+                
+                  >
                   {moment(v?.timestamp?.seconds * 1000).fromNow()}
                 </Text>
               </View>
